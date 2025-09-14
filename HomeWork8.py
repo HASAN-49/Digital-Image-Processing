@@ -1,37 +1,32 @@
 import cv2
 import matplotlib.pyplot as plt
 
+def display_img(img_set, titles, row, col):
+    plt.figure(figsize=(12, 10))
+    for k in range(len(img_set)):
+        plt.subplot(row, col, k + 1)
+        plt.imshow(img_set[k], cmap='gray')
+        plt.title(titles[k])
+        plt.axis('off')
+    plt.tight_layout()
+    # plt.savefig("images/output/canny_edges_figure.png")
+    plt.show()
+
 def main():
     # Load the image in grayscale
     image = cv2.imread("nature1.png", cv2.IMREAD_GRAYSCALE)
-
-    if image is None:
-        print("Error: Image not found.")
-        return
 
     # Apply Canny edge detection with different thresholds
     edges1 = cv2.Canny(image, 50, 150)
     edges2 = cv2.Canny(image, 100, 200)
     edges3 = cv2.Canny(image, 150, 250)
 
-    # Create subplots for displaying the images
-    fig, axes = plt.subplots(2, 2, figsize=(12, 10))
-    axes[0, 0].imshow(image, cmap="gray")
-    axes[0, 0].set_title("Original")
-    axes[0, 1].imshow(edges1, cmap="gray")
-    axes[0, 1].set_title("Canny 50-150")
-    axes[1, 0].imshow(edges2, cmap="gray")
-    axes[1, 0].set_title("Canny 100-200")
-    axes[1, 1].imshow(edges3, cmap="gray")
-    axes[1, 1].set_title("Canny 150-250")
+    # Prepare image set and titles
+    img_set = [image, edges1, edges2, edges3]
+    titles = ["Original", "Canny 50-150", "Canny 100-200", "Canny 150-250"]
 
-    # Hide axes
-    for ax in axes.flat:
-        ax.axis("off")
-
-    plt.tight_layout()
-    # plt.savefig("images/output/canny_edges_figure.png")
-    plt.show()
+    # Display images
+    display_img(img_set, titles, row=2, col=2)
 
 if __name__ == "__main__":
     main()
